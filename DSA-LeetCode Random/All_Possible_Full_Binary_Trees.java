@@ -1,7 +1,6 @@
 // https://leetcode.com/problems/all-possible-full-binary-trees/description/
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +40,10 @@ public class All_Possible_Full_Binary_Trees {
         }
 
         if (n == 1) {
-            return Arrays.asList(new TreeNode());
+            TreeNode node = new TreeNode(0);
+            List<TreeNode> list = new ArrayList<>();
+            list.add(node);
+            return list;
         }
 
         if (dp.containsKey(n)) {
