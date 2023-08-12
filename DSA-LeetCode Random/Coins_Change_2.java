@@ -2,8 +2,8 @@
 
 public class Coins_Change_2 {
     public static void main(String[] args) {
-        int[] coins = { 10 };
-        System.out.println(diff_types(coins, 10));
+        int[] coins = { 1, 2, 5 };
+        System.out.println(diff_types(coins, 5));
     }
 
     public static int diff_types(int[] coins, int amount) {
