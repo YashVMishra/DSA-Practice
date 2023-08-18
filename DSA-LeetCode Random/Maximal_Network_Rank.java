@@ -43,6 +43,7 @@ public class Maximal_Network_Rank {
             count[road[1]]++;
 
             // for directly connected components.
+            // imp lines.
             direct[road[0]][road[1]] = 1;
             direct[road[1]][road[0]] = 1;
         }
