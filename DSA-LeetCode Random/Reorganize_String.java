@@ -1,60 +1,61 @@
-//https://leetcode.com/problems/reorganize-string/description/
-
-import java.util.PriorityQueue;
+// https://leetcode.com/problems/reorganize-string/description/
 
 public class Reorganize_String {
     public static void main(String[] args) {
-        String s = "aab";
+        String s = "aaaabbbcc";
         System.out.println(reorganizeString(s));
     }
 
-    static class Pair {
-        char ch;
-        int freq;
-
-        public Pair(char ch, int freq) {
-            this.ch = ch;
-            this.freq = freq;
-        }
-    }
-
     public static String reorganizeString(String s) {
-        int[] map = new int[26];
-
+        int[] count = new int[26];
         for (int i = 0; i < s.length(); i++) {
-            map[s.charAt(i) - 'a']++;
+
+            // count the frequency of each character
+            count[s.charAt(i) - 'a']++;
         }
 
-        // making max heap according to the frequency.
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> (b.freq - a.freq));
-
-        for (int i = 0; i < 26; i++) {
-            if (map[i] > 0) {
-                pq.add(new Pair((char) ('a' + i), map[i]));
+        // find the most frequent character and character also.
+        int max = 0, letter = 0;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] > max) {
+                max = count[i];
+                letter = i;
             }
         }
 
-        StringBuilder ans = new StringBuilder();
-        Pair block = pq.poll();
-        ans.append(block.ch);
-        block.freq--;
-
-        while (pq.size() > 0) {
-            Pair temp = pq.poll();
-            ans.append(temp.ch);
-            temp.freq--;
-
-            if (block.freq > 0) {
-                pq.add(block);
-            }
-
-            block = temp;
-        }
-
-        if (block.freq > 0) {
+        // if the most frequent character is more than half of the string length, then
+        // return empty string.
+        if (max > (s.length() + 1) / 2) {
             return "";
         }
 
-        return ans.toString();
+        // now create ans array to fill the characters.
+        // and fill the most frequent character at even index.
+        char[] ans = new char[s.length()];
+        int index = 0;
+        while (max > 0) {
+            ans[index] = (char) (letter + 'a');
+            index += 2;
+            max--;
+        }
+
+        // make the count of the most frequent character as zero.
+        count[letter] = 0;
+        for (int i = 0; i < count.length; i++) {
+            while (count[i] > 0) {
+
+                // after we have filled the most frequent character at even index and
+                // we have reached the end of the array then we change the index to 1
+                // and after that we dont have to think about changing the index
+                // cause we have already filled the most frequent character at even index.
+                // and now the index will not exceed ans array limit.
+                index = index >= ans.length ? 1 : index;
+                ans[index] = (char) (i + 'a');
+                index += 2;
+                count[i]--;
+            }
+        }
+
+        return String.valueOf(ans);
     }
 }
