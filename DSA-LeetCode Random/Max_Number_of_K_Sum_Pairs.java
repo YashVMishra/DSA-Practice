@@ -11,28 +11,24 @@ public class Max_Number_of_K_Sum_Pairs {
 
     public static int maxOperations(int[] nums, int k) {
         Arrays.sort(nums);
-        int start = 0;
-        int end = nums.length - 1;
-        int operationsCount = 0;
+        int count = 0;
+        int left = 0;
+        int right = nums.length - 1;
 
-        while (start < end) {
-            int sum = nums[start] + nums[end];
+        while (left < right) {
+            int sum = nums[left] + nums[right];
 
             if (sum == k) {
-                operationsCount++;
-                start++;
-                end--;
-            }
-
-            else if (sum > k) {
-                end--;
-            }
-
-            else {
-                start++;
+                count++;
+                left++;
+                right--;
+            } else if (sum > k) {
+                right--;
+            } else {
+                left++;
             }
         }
 
-        return operationsCount;
+        return count;
     }
 }
