@@ -2,19 +2,21 @@
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Longest_Inc_Subsequence {
     public static void main(String[] args) {
         int[] nums = { 10, 22, 9, 33, 21, 50, 41, 60, 80, 1 };
+        System.out.println(lengthOfLIS_1(nums));
         System.out.println(lengthOfLIS_2(nums));
+        System.out.println(lengthOfLIS_3(nums));
     }
 
     // brute force method to generate all the subsequence and check for the
     // longest subsequence.
     // In this approach TLE as well as Memory limit exceed will also occur.
-    public static int lengthOfLIS(int[] nums) {
+    public static int lengthOfLIS_1(int[] nums) {
         List<List<Integer>> list = subsets(nums);
-        System.out.println(list);
 
         int max_length = 1;
 
@@ -56,8 +58,62 @@ public class Longest_Inc_Subsequence {
         return true;
     }
 
-    // dp method that runs in O(n) time.
+    // ------------------------------------------------------------------------------------------
+
+    // using recursion.
     public static int lengthOfLIS_2(int[] nums) {
+        int[][] dp = new int[nums.length][nums.length + 1];
+        Arrays.stream(dp).forEach(a -> Arrays.fill(a, -1));
+
+        // return helper(0, -1, nums);
+        return helper_DP(0, -1, nums, dp);
+    }
+
+    // function for LIS_2 method.
+    public static int helper(int index, int prevIndex, int[] nums) {
+        if (index == nums.length) {
+            return 0;
+        }
+
+        int take = 0;
+        int notTake = 0;
+
+        if (prevIndex == -1 || nums[index] > nums[prevIndex]) {
+            take = 1 + helper(index + 1, index, nums);
+        }
+
+        notTake = 0 + helper(index + 1, prevIndex, nums);
+
+        return Math.max(take, notTake);
+    }
+
+    // using DP.
+    public static int helper_DP(int index, int prevIndex, int[] nums, int[][] dp) {
+        if (index == nums.length) {
+            return 0;
+        }
+
+        if (dp[index][prevIndex + 1] != -1) {
+            return dp[index][prevIndex + 1];
+        }
+
+        int take = 0;
+        int notTake = 0;
+
+        if (prevIndex == -1 || nums[index] > nums[prevIndex]) {
+            take = 1 + helper_DP(index + 1, index, nums, dp);
+        }
+
+        notTake = 0 + helper_DP(index + 1, prevIndex, nums, dp);
+
+        // writing +1 cause at one point we have prevIndex as -1.
+        return dp[index][prevIndex + 1] = Math.max(take, notTake);
+    }
+
+    // ------------------------------------------------------------------------------------------
+
+    // dp method that runs in O(n) time.
+    public static int lengthOfLIS_3(int[] nums) {
         int[] dp = new int[nums.length];
         int max_length = 1;
 
