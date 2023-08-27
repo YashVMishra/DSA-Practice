@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
+// https://leetcode.com/problems/find-the-difference-of-two-arrays/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ public class Find_the_Difference_of_Two_Arrays {
 
     public static List<Integer> helper(int[] nums1, int[] nums2) {
         HashSet<Integer> set = new HashSet<>();
-        List<Integer> list = new ArrayList<>();
+        List<Integer> ans = new ArrayList<>();
 
         for (int i : nums1) {
             set.add(i);
@@ -35,15 +35,13 @@ public class Find_the_Difference_of_Two_Arrays {
         }
 
         Iterator<Integer> it = set.iterator();
-
         while (it.hasNext()) {
-            list.add(it.next());
+            ans.add(it.next());
         }
 
-        return list;
-
-        // You can also return this
+        // you can also do this.
         // return new ArrayList<>(set);
 
+        return ans;
     }
 }
