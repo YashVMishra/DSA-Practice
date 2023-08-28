@@ -25,6 +25,8 @@ public class Subsets_Arrays {
         }
     }
 
+    // ---------------------------------------------------------------------------------
+
     // using loop.
     public static List<List<Integer>> generateUsingLoop(int[] nums) {
         List<List<Integer>> outer = new ArrayList<>();
