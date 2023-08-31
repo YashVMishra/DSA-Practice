@@ -34,6 +34,8 @@ public class Permutations_Arrays {
         }
     }
 
+    // ------------------------------------------------------------------------------------
+
     public static List<List<Integer>> permute_2(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         generate_2(0, nums, ans);
