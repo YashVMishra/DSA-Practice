@@ -1,6 +1,6 @@
-import java.util.Arrays;
+// https://leetcode.com/problems/counting-bits/description/
 
-//https://leetcode.com/problems/counting-bits/description/
+import java.util.Arrays;
 
 public class Counting_Bits {
     public static void main(String[] args) {
@@ -11,7 +11,7 @@ public class Counting_Bits {
         int[] ans = new int[n + 1];
 
         for (int i = 0; i <= n; i++) {
-            ans[i] = no_of_set_bits(i);
+            ans[i] = no_of_set_bits_2(i);
         }
 
         return ans;
@@ -26,6 +26,18 @@ public class Counting_Bits {
             if (str.charAt(i) == '1') {
                 count++;
             }
+        }
+
+        return count;
+    }
+
+    // counting the number of set bits in the given number using bit manipulation
+    public static int no_of_set_bits_2(int num) {
+        int count = 0;
+
+        while (num != 0) {
+            num = num & (num - 1);
+            count++;
         }
 
         return count;
