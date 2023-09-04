@@ -59,8 +59,8 @@ public class LL_Cycle {
         ListNode slow = head;
         ListNode fast = head;
 
-        // fast.next checks for last node and
-        // fast.next.next checks for the second last node.
+        // fast checks for null
+        // fast.next checks for the last node.
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;

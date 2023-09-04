@@ -1,4 +1,16 @@
-//https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/description/
+// https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/description/?envType=study-plan-v2&envId=leetcode-75
+
+import java.util.ArrayList;
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
+}
 
 public class Maximum_Twin_Sum_of_a_Linked_List {
     public static void main(String[] args) {
@@ -17,63 +29,62 @@ public class Maximum_Twin_Sum_of_a_Linked_List {
 
     // uses extra space.
     public static int pairSum(ListNode head) {
-        int len = 0;
+        ArrayList<Integer> list = new ArrayList<>();
         ListNode temp = head;
 
-        // finding length.
         while (temp != null) {
-            len++;
+            list.add(temp.val);
             temp = temp.next;
         }
 
-        // creating a new array.
-        int[] arr = new int[len];
-
-        // filling the new array
-        temp = head;
-        int index = 0;
-        while (temp != null) {
-            arr[index] = temp.val;
-            index++;
-            temp = temp.next;
-        }
-
-        // calculating the maximum twin sum.
-        int ans = Integer.MIN_VALUE;
-        for (int i = 0; i <= (len / 2) - 1; i++) {
-            ans = Math.max(ans, arr[i] + arr[len - i - 1]);
-        }
-
-        return ans;
-    }
-
-    public static int pairSum_2(ListNode head) {
-        ListNode slow = head;
-        ListNode fast = head;
         int maxVal = 0;
+        int left = 0;
+        int right = list.size() - 1;
 
-        // finding the mid of the LL.
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // reversing the LL from the slow Node.
-        ListNode nextNode, prev = null;
-        while (slow != null) {
-            nextNode = slow.next;
-            slow.next = prev;
-            prev = slow;
-            slow = nextNode;
-        }
-
-        // calculating the maximum twin sum.
-        while (prev != null) {
-            maxVal = Math.max(maxVal, head.val + prev.val);
-            prev = prev.next;
-            head = head.next;
+        while (left < right) {
+            maxVal = Math.max(maxVal, list.get(left) + list.get(right));
+            left++;
+            right--;
         }
 
         return maxVal;
+    }
+
+    // ------------------------------------------------------------------------------------------
+
+    public static int pairSum_2(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        ListNode revHead = reverse(slow);
+        ListNode temp = head;
+        int maxVal = 0;
+
+        while (temp != null && revHead != null) {
+            maxVal = Math.max(maxVal, temp.val + revHead.val);
+            temp = temp.next;
+            revHead = revHead.next;
+        }
+
+        return maxVal;
+    }
+
+    public static ListNode reverse(ListNode head) {
+        ListNode current = head;
+        ListNode prev = null;
+
+        while (current != null) {
+            ListNode nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+        return prev;
     }
 }
