@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+// https://leetcode.com/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -44,20 +44,12 @@ public class Max_Depth_BT {
 
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
-        int count_levels = -1;
+        int count_levels = 0;
 
-        while (true) {
+        while (!q.isEmpty()) {
+            int size = q.size();
 
-            // conatins the total nodes in that level.
-            int total_nodes = q.size();
-
-            // means the tree is now empty.
-            if (total_nodes == 0) {
-                return count_levels + 1;
-            }
-
-            // adding the children of the nodes and removing the previous nodes.
-            while (total_nodes > 0) {
+            for (int i = 0; i < size; i++) {
                 TreeNode temp = q.poll();
 
                 if (temp.left != null) {
@@ -67,17 +59,16 @@ public class Max_Depth_BT {
                 if (temp.right != null) {
                     q.add(temp.right);
                 }
-
-                total_nodes--;
             }
 
             count_levels++;
         }
+
+        return count_levels;
     }
 
     // recursive solution.
     public static int maxDepth_2(TreeNode root) {
-
         if (root == null) {
             return 0;
         }

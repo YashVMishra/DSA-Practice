@@ -2,8 +2,8 @@
 
 public class Increase_Triplet_Subsequence {
     public static void main(String[] args) {
-        int[] nums = { 2, 1, 5, 0, 4, 6 };
-        System.out.println(increasingTriplet_3(nums));
+        int[] nums = { 2, 1, 3, 0, 4, 6 };
+        System.out.println(increasingTriplet_2(nums));
     }
 
     // brute force method.

@@ -57,33 +57,36 @@ public class Copy_List_With_Random_Pointer {
     // using constant space.
     public static Node copyRandomList_2(Node head) {
 
-        // create new deep copy for every node and join then alternatively.
+        // just make new nodes of the original list and put them in between the
+        // original nodes.
         Node temp = head;
         while (temp != null) {
-            Node node = new Node(temp.val);
-            node.next = temp.next;
-            temp.next = node;
+            Node newNode = new Node(temp.val);
+            newNode.next = temp.next;
+            temp.next = newNode;
             temp = temp.next.next;
         }
 
-        // update the random pointers.
+        // updating the random pointers.
         temp = head;
         while (temp != null) {
+
+            // we are using if-else because temp.random can be null and we are
+            // accessing temp.random.next which will give null pointer exception.
             temp.next.random = temp.random != null ? temp.random.next : null;
             temp = temp.next.next;
         }
 
         temp = head;
         Node dummy = new Node(0);
-        Node dummy_head = dummy;
+        Node newHead = dummy;
 
-        // now separate deep copy and the original copy.
+        // sepeare the original list from the duplicate.
         while (temp != null) {
-            Node front = temp.next.next;
-            dummy_head.next = temp.next;
-            temp.next = front;
+            newHead.next = temp.next;
+            temp.next = temp.next.next;
+            newHead = newHead.next;
             temp = temp.next;
-            dummy_head = dummy_head.next;
         }
 
         return dummy.next;
