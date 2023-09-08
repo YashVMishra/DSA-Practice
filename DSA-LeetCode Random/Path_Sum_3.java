@@ -21,7 +21,7 @@ class TreeNode {
 
 public class Path_Sum_3 {
 
-    static int result = 0;
+    static int ans = 0;
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(10);
@@ -41,7 +41,7 @@ public class Path_Sum_3 {
 
     public static int pathSum(TreeNode root, int targetSum) {
         dfs(root, targetSum);
-        return result;
+        return ans;
     }
 
     // taking the sum variable as long to prevent overflow.
@@ -56,15 +56,18 @@ public class Path_Sum_3 {
         dfs(root.right, sum);
     }
 
+    // we cannot pass sum-root.val and check sum == 0 as it will not consider
+    // the leaf node values and when the value becomes zero then it will
+    // return from the first if condition.
+    // so use a temp variable to check the sum.
     public static void calculateSum(TreeNode root, long sum) {
         if (root == null) {
             return;
         }
 
         long temp = sum - root.val;
-
         if (temp == 0) {
-            result++;
+            ans++;
         }
 
         calculateSum(root.left, temp);
