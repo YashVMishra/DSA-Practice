@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/description/
+// https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75
 
 class TreeNode {
     int val;
@@ -20,7 +20,7 @@ class TreeNode {
 }
 
 public class Longest_ZigZig_Path_BT {
-    public static int maxLength = 0;
+    static int maxLength = 0;
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
@@ -34,28 +34,25 @@ public class Longest_ZigZig_Path_BT {
         System.out.println(longestZigZag(root));
     }
 
-    public static void solve(TreeNode root, int dir, int currLength) {
+    public static void solve(TreeNode root, int steps, boolean goLeft) {
         if (root == null) {
             return;
         }
 
-        maxLength = Math.max(maxLength, currLength);
+        maxLength = Math.max(maxLength, steps);
 
-        if (dir == 1) {
-            solve(root.left, 0, currLength + 1);
-            solve(root.right, 1, 1);
-        }
-
-        else {
-            solve(root.right, 1, currLength + 1);
-            solve(root.left, 0, 1);
+        if (goLeft) {
+            solve(root.left, steps + 1, false);
+            solve(root.right, 1, true);
+        } else {
+            solve(root.right, steps + 1, true);
+            solve(root.left, 1, false);
         }
     }
 
     public static int longestZigZag(TreeNode root) {
-
-        solve(root, 0, 0);
-        solve(root, 1, 0);
+        solve(root, 0, true);
+        solve(root, 0, false);
         return maxLength;
     }
 }
