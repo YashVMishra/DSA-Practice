@@ -6,13 +6,19 @@ public class Count_All_Valid_Pickup_and_Delivery_Options {
     }
 
     public static int countOrders(int n) {
-        int mod = 1000000007;
-        long ans = 1;
-
-        for (int i = 2; i <= n; i++) {
-            ans = (ans * (2 * i - 1) * i) % mod;
+        int M = 1000000007;
+        if (n == 1) {
+            return 1;
         }
 
-        return (int) (ans % mod);
+        long result = 1;
+        for (int i = 2; i <= n; i++) {
+            int spaces = (i - 1) * 2 + 1;
+            int possibility = spaces * (spaces + 1) / 2;
+            result *= possibility;
+            result %= M;
+        }
+
+        return (int) result;
     }
 }
