@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/description/
+// https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.Queue;
 import java.util.LinkedList;
@@ -43,20 +43,20 @@ public class Maximum_Level_Sum_Of_BT {
         int level = 0;
 
         while (!q.isEmpty()) {
-            level++;
-            int size = q.size();
             int currSum = 0;
+            int size = q.size();
+            level++;
 
             for (int i = 0; i < size; i++) {
                 TreeNode temp = q.poll();
                 currSum += temp.val;
 
                 if (temp.left != null) {
-                    q.offer(temp.left);
+                    q.add(temp.left);
                 }
 
                 if (temp.right != null) {
-                    q.offer(temp.right);
+                    q.add(temp.right);
                 }
             }
 
