@@ -66,7 +66,7 @@ public class Median_Sorted_Array {
     // and O(m+n) TC.
     // since from the array we only needed two elements at max
     // so we store them in two variables.
-    public static double findMedianSortedArrays_3(int[] nums1, int[] nums2) {
+    public static double findMedianSortedArrays_2(int[] nums1, int[] nums2) {
         int totalLength = nums1.length + nums2.length;
         int index1 = 0, index2 = 0;
 
@@ -110,9 +110,9 @@ public class Median_Sorted_Array {
 
     // ---------------------------------------------------------------------------------------
 
-    public static double findMedianSortedArrays_2(int[] nums1, int[] nums2) {
+    public static double findMedianSortedArrays_3(int[] nums1, int[] nums2) {
         if (nums2.length < nums1.length) {
-            return findMedianSortedArrays_2(nums2, nums1);
+            return findMedianSortedArrays_3(nums2, nums1);
         }
 
         int len1 = nums1.length;
