@@ -27,10 +27,13 @@ public class Longest_String_Chain {
         int take = 0;
         int notTake = 0;
 
+        // taking the current word.
+        // always write prevIndex == -1 first because of short circuiting.
         if (prevIndex == -1 || isPredecessor(words[prevIndex], words[index])) {
             take = 1 + LIS_Variant(words, index, index + 1);
         }
 
+        // skipping the current word.
         notTake = LIS_Variant(words, prevIndex, index + 1);
 
         return Math.max(take, notTake);
@@ -49,15 +52,20 @@ public class Longest_String_Chain {
         int take = 0;
         int notTake = 0;
 
+        // take the current word.
+        // always write prevIndex == -1 first because of short circuiting.
         if (prevIndex == -1 || isPredecessor(words[prevIndex], words[index])) {
             take = 1 + LIS_Variant_DP(words, index, index + 1, dp);
         }
 
+        // skipping the current word.
         notTake = LIS_Variant_DP(words, prevIndex, index + 1, dp);
 
+        // prevIndex + 1 because prevIndex can be -1.
         return dp[prevIndex + 1][index] = Math.max(take, notTake);
     }
 
+    // predecessor function.
     private static boolean isPredecessor(String str1, String str2) {
         if (str1.length() + 1 != str2.length()) {
             return false;
