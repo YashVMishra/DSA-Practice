@@ -1,13 +1,19 @@
-//https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/
+// https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/?envType=study-plan-v2&envId=leetcode-75
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Reorder_Routes_to_Make_All_Paths_Lead_to_City_Zero {
+class Pair<T, U> {
+    T first;
+    U second;
 
+    Pair(T first, U second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+
+public class Reorder_Routes_to_Make_All_Paths_Lead_to_City_Zero {
     static int count = 0;
 
     public static void main(String[] args) {
@@ -16,37 +22,57 @@ public class Reorder_Routes_to_Make_All_Paths_Lead_to_City_Zero {
         System.out.println(minReorder(n, connections));
     }
 
-    public static void dfs(int node, int parent, Map<Integer, List<List<Integer>>> adj) {
-        if (!adj.containsKey(node)) {
-            return;
+    public static int minReorder(int n, int[][] connections) {
+        List<List<Pair<Integer, Integer>>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
         }
 
-        for (List<Integer> nei : adj.get(node)) {
-            int child = nei.get(0);
-            int sign = nei.get(1);
+        for (int[] edge : connections) {
+            int u = edge[0];
+            int v = edge[1];
 
-            if (child != parent) {
-                count += sign;
-                dfs(child, node, adj);
+            adj.get(u).add(new Pair<>(v, 1));
+            adj.get(v).add(new Pair<>(u, 0));
+        }
+
+        boolean[] visited = new boolean[n];
+        dfs_1(0, visited, adj);
+
+        return count;
+    }
+
+    // using visited array
+    public static void dfs_1(int node, boolean[] visited, List<List<Pair<Integer, Integer>>> adj) {
+        visited[node] = true;
+
+        for (Pair<Integer, Integer> p : adj.get(node)) {
+            int u = p.first;
+            int v = p.second;
+
+            if (!visited[u]) {
+                if (v == 1) {
+                    count++;
+                }
+
+                dfs_1(u, visited, adj);
             }
         }
     }
 
-    public static int minReorder(int n, int[][] connections) {
-        Map<Integer, List<List<Integer>>> adj = new HashMap<>();
+    // using a variable as parent.
+    public static void dfs_2(int node, int parent, List<List<Pair<Integer, Integer>>> adj) {
+        for (Pair<Integer, Integer> p : adj.get(node)) {
+            int u = p.first;
+            int v = p.second;
 
-        for (int[] connection : connections) {
+            if (parent != u) {
+                if (v == 1) {
+                    count++;
+                }
 
-            adj.computeIfAbsent(connection[0], k -> new ArrayList<List<Integer>>())
-                    .add(Arrays.asList(connection[1], 1));
-
-            adj.computeIfAbsent(connection[1], k -> new ArrayList<List<Integer>>())
-                    .add(Arrays.asList(connection[0], 0));
-
+                dfs_2(u, node, adj);
+            }
         }
-
-        dfs(0, -1, adj);
-        return count;
     }
-
 }
