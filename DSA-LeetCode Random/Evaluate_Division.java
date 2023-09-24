@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/evaluate-division/description/
+// https://leetcode.com/problems/evaluate-division/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+class Pair {
+    String first;
+    double second;
+
+    Pair(String first, double second) {
+        this.first = first;
+        this.second = second;
+    }
+}
 
 public class Evaluate_Division {
     public static void main(String[] args) {
@@ -27,79 +37,62 @@ public class Evaluate_Division {
     }
 
     public static double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        Map<String, Map<String, Double>> graph = buildGraph(equations, values);
-        double[] ans = new double[queries.size()];
-        int index = 0;
+        int n = equations.size();
 
-        for (List<String> query : queries) {
-            Set<String> visited = new HashSet<>();
+        Map<String, List<Pair>> adj = new HashMap<>();
 
-            if (query.get(0).equals(query.get(1))) {
-                if (graph.containsKey(query.get(0))) {
-                    ans[index] = 1.0;
-                    index++;
-                }
+        for (int i = 0; i < n; i++) {
+            String u = equations.get(i).get(0);
+            String v = equations.get(i).get(1);
+            double val = values[i];
 
-                else {
-                    ans[index] = -1.0;
-                    index++;
-                }
+            adj.putIfAbsent(u, new ArrayList<>());
+            adj.putIfAbsent(v, new ArrayList<>());
 
-                continue;
+            adj.get(u).add(new Pair(v, val)); // To handle a/c
+            adj.get(v).add(new Pair(u, 1.0 / val)); // To handle c/a
+        }
+
+        double[] result = new double[queries.size()];
+
+        for (int i = 0; i < queries.size(); i++) {
+            List<String> query = queries.get(i);
+
+            String src = query.get(0);
+            String dst = query.get(1);
+
+            double[] ans = { -1.0 };
+            double product = 1.0;
+
+            if (adj.containsKey(src)) {
+                Set<String> visited = new HashSet<>();
+
+                dfs(adj, src, dst, visited, product, ans);
             }
 
-            double res = dfs(query.get(0), query.get(1), graph, visited);
-            ans[index] = res;
-            index++;
+            result[i] = ans[0];
         }
 
-        return ans;
+        return result;
     }
 
-    // graph building.
-    public static Map<String, Map<String, Double>> buildGraph(List<List<String>> equations, double[] values) {
-        Map<String, Map<String, Double>> graph = new HashMap<>();
-        int index = 0;
-
-        for (List<String> equation : equations) {
-            String start = equation.get(0);
-            String end = equation.get(1);
-            double value = values[index];
-            index++;
-
-            graph.putIfAbsent(start, new HashMap<>());
-            graph.get(start).put(end, value);
-
-            graph.putIfAbsent(end, new HashMap<>());
-            graph.get(end).put(start, 1 / value);
+    public static void dfs(Map<String, List<Pair>> adj, String src, String dst, Set<String> visited, double product,
+            double[] ans) {
+        if (visited.contains(src)) {
+            return;
         }
 
-        return graph;
-    }
-
-    // dfs traversal.
-    public static double dfs(String start, String end, Map<String, Map<String, Double>> graph, Set<String> visited) {
-        if (!graph.containsKey(start)) {
-            return -1.0;
+        visited.add(src);
+        if (src.equals(dst)) {
+            ans[0] = product;
+            return;
         }
 
-        if (graph.get(start).containsKey(end)) {
-            return graph.get(start).get(end);
+        for (Pair p : adj.get(src)) {
+            String v = p.first;
+            double val = p.second;
+
+            dfs(adj, v, dst, visited, product * val, ans);
         }
-
-        visited.add(start);
-        Map<String, Double> startMap = graph.get(start);
-        for (Map.Entry<String, Double> entry : startMap.entrySet()) {
-            if (!visited.contains(entry.getKey())) {
-                double currVal = dfs(entry.getKey(), end, graph, visited);
-
-                if (currVal != -1) {
-                    return currVal * entry.getValue();
-                }
-            }
-        }
-
-        return -1.0;
-
     }
 }
