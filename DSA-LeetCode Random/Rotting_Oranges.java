@@ -1,17 +1,15 @@
-//https://leetcode.com/problems/rotting-oranges/description/?envType=study-plan&id=level-2
+// https://leetcode.com/problems/rotting-oranges/description/?envType=study-plan&id=level-2
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 class Pair {
-    int row;
-    int col;
-    int time;
+    int x;
+    int y;
 
-    Pair(int row, int col, int time) {
-        this.row = row;
-        this.col = col;
-        this.time = time;
+    Pair(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
 
@@ -22,68 +20,62 @@ public class Rotting_Oranges {
     }
 
     public static int orangesRotting(int[][] grid) {
-        int row = grid.length;
-        int col = grid[0].length;
-
         Queue<Pair> q = new LinkedList<>();
-        int[][] visited = new int[row][col];
-        int count_fresh = 0;
+        int totalOranges = 0, rotten = 0, time = 0;
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1 || grid[i][j] == 2) {
+                    totalOranges++;
+                }
+
                 if (grid[i][j] == 2) {
-                    q.add(new Pair(i, j, 0));
-                    visited[i][j] = 2;
-                }
-
-                else {
-                    visited[i][j] = 0;
-                }
-
-                if (grid[i][j] == 1) {
-                    count_fresh++;
+                    q.offer(new Pair(i, j));
                 }
             }
         }
 
-        int req_time = 0;
-
-        // delta row and delta column
-        int drow[] = { -1, 0, +1, 0 };
-        int dcol[] = { 0, 1, 0, -1 };
-        int curr_fresh = 0;
+        if (totalOranges == 0) {
+            return 0;
+        }
 
         while (!q.isEmpty()) {
-            int r = q.peek().row;
-            int c = q.peek().col;
-            int t = q.peek().time;
-            req_time = Math.max(req_time, t);
-            q.remove();
+            int size = q.size();
+            rotten += size;
 
-            for (int i = 0; i < 4; i++) {
-                int nrow = r + drow[i];
-                int ncol = c + dcol[i];
+            if (rotten == totalOranges) {
+                return time;
+            }
 
-                // check for valid coordinates and
-                // then for unvisited fresh orange
-                if (nrow >= 0 && nrow < row && ncol >= 0 && ncol < col && visited[nrow][ncol] == 0
-                        && grid[nrow][ncol] == 1) {
+            time++;
 
-                    // push in queue with timer increased
-                    q.add(new Pair(nrow, ncol, t + 1));
+            for (int i = 0; i < size; i++) {
+                Pair p = q.peek();
 
-                    // mark as rotten
-                    visited[nrow][ncol] = 2;
-                    curr_fresh++;
+                if (p.x + 1 < grid.length && grid[p.x + 1][p.y] == 1) {
+                    grid[p.x + 1][p.y] = 2;
+                    q.offer(new Pair(p.x + 1, p.y));
                 }
+
+                if (p.x - 1 >= 0 && grid[p.x - 1][p.y] == 1) {
+                    grid[p.x - 1][p.y] = 2;
+                    q.offer(new Pair(p.x - 1, p.y));
+                }
+
+                if (p.y + 1 < grid[0].length && grid[p.x][p.y + 1] == 1) {
+                    grid[p.x][p.y + 1] = 2;
+                    q.offer(new Pair(p.x, p.y + 1));
+                }
+
+                if (p.y - 1 >= 0 && grid[p.x][p.y - 1] == 1) {
+                    grid[p.x][p.y - 1] = 2;
+                    q.offer(new Pair(p.x, p.y - 1));
+                }
+
+                q.poll();
             }
         }
 
-        if (curr_fresh != count_fresh) {
-            return -1;
-        }
-
-        return req_time;
+        return -1;
     }
-
 }
