@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/total-cost-to-hire-k-workers/description/
+// https://leetcode.com/problems/total-cost-to-hire-k-workers/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -70,6 +70,8 @@ public class Total_Cost_to_Hire_K_Workers {
         return ans;
     }
 
+    // -------------------------------------------------------------------------------------
+
     public static long totalCost_2(int[] costs, int k, int candidates) {
         PriorityQueue<Integer> pq1 = new PriorityQueue<>();
         PriorityQueue<Integer> pq2 = new PriorityQueue<>();
@@ -88,14 +90,14 @@ public class Total_Cost_to_Hire_K_Workers {
                 pq2.offer(costs[j--]);
             }
 
-            int a = pq1.size() > 0 ? pq1.peek() : Integer.MAX_VALUE;
-            int b = pq2.size() > 0 ? pq2.peek() : Integer.MAX_VALUE;
+            int min1 = pq1.size() > 0 ? pq1.peek() : Integer.MAX_VALUE;
+            int min2 = pq2.size() > 0 ? pq2.peek() : Integer.MAX_VALUE;
 
-            if (a <= b) {
-                ans += a;
+            if (min1 <= min2) {
+                ans += min1;
                 pq1.poll();
             } else {
-                ans += b;
+                ans += min2;
                 pq2.poll();
             }
 
