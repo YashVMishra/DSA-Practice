@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/successful-pairs-of-spells-and-potions/description/
+// https://leetcode.com/problems/successful-pairs-of-spells-and-potions/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.Arrays;
 
@@ -28,6 +28,8 @@ public class Successful_Pair_Spell_Potion {
         return ans;
     }
 
+    // -----------------------------------------------------------------------------------
+
     // little bit optimized.
     public static int[] successfulPairs_2(int[] spells, int[] potions, long success) {
         int n = spells.length;
@@ -47,55 +49,53 @@ public class Successful_Pair_Spell_Potion {
         return ans;
     }
 
+    // -----------------------------------------------------------------------------------
+
     // optimized version.
     public static int[] successfulPairs_3(int[] spells, int[] potions, long success) {
-        // Sort the potions array in increasing order.
         Arrays.sort(potions);
-        int[] answer = new int[spells.length];
-
-        int m = potions.length;
-        int maxPotion = potions[m - 1];
+        int[] ans = new int[spells.length];
 
         for (int i = 0; i < spells.length; i++) {
-            int spell = spells[i];
+            int key = (int) (Math.ceil(1.0 * success / spells[i]));
 
-            // Minimum value of potion whose product with current spell
-            // will be at least success or more.
-            long minPotion = (long) Math.ceil((1.0 * success) / spell);
-
-            // Check if we don't have any potion which can be used.
-            if (minPotion > maxPotion) {
-                answer[i] = 0;
+            if (key >= potions[potions.length - 1]) {
+                ans[i] = 0;
                 continue;
             }
 
-            // We can use the found potion, and all potion in its right
-            // (as the right potions are greater than the found potion).
-            int index = lowerBound(potions, (int) minPotion);
-            answer[i] = m - index;
+            int index = lowerBound(potions, key);
+            ans[i] = potions.length - index;
         }
 
-        return answer;
+        return ans;
     }
 
-    // implementation of lower bound method using binary search.
-    // very important.
-    public static int lowerBound(int[] arr, int key) {
-        int lo = 0;
-        int hi = arr.length;
+    // here we have to find an index of that element whose value is greater than or
+    // equal to key that is lowerbound.
+    // and in these cases we don't have to check for the condition
+    // if(arr[mid] == key) because we have to find the index of that element whose
+    // value is greater than or equal to key.
 
-        while (lo < hi) {
-            int mid = lo + (hi - lo) / 2;
+    // For ex : arr = {1, 2, 4, 4, 5}
+    // here if the key is 4 there might be a chance that the
+    // binary search will return the index of the second 4.
+    // and the first 4 will be ignored and we dont want that
+    // as it decreases our count by one.
+    public static int lowerBound(int[] arr, int key) {
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
 
             if (arr[mid] < key) {
-                lo = mid + 1;
-            }
-
-            else {
-                hi = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
 
-        return lo;
+        return left;
     }
 }
