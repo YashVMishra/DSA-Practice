@@ -53,13 +53,18 @@ public class Successful_Pair_Spell_Potion {
 
     // optimized version.
     public static int[] successfulPairs_3(int[] spells, int[] potions, long success) {
+        // Sort the array for binary search.
         Arrays.sort(potions);
         int[] ans = new int[spells.length];
 
         for (int i = 0; i < spells.length; i++) {
+
+            // find the key for which we have to find the index.
             int key = (int) (Math.ceil(1.0 * success / spells[i]));
 
-            if (key >= potions[potions.length - 1]) {
+            // if the key is greater than the last element of the potions array then we
+            // don't have to check for the index as we dont have any successful pair.
+            if (key > potions[potions.length - 1]) {
                 ans[i] = 0;
                 continue;
             }
