@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/koko-eating-bananas/description/
+// https://leetcode.com/problems/koko-eating-bananas/description/?envType=study-plan-v2&envId=leetcode-75
 
 public class Koko_Eating_Bananas {
     public static void main(String[] args) {
@@ -19,9 +19,9 @@ public class Koko_Eating_Bananas {
         }
 
         for (int i = 1; i <= max; i++) {
-            int temp = calculate(piles, i);
+            int hours = calculate(piles, i);
 
-            if (temp <= h) {
+            if (hours <= h) {
                 ans = i;
                 break;
             }
@@ -45,9 +45,9 @@ public class Koko_Eating_Bananas {
         while (low <= high) {
             int mid = low + (high - low) / 2;
 
-            int time = calculate(piles, mid);
+            int hours = calculate(piles, mid);
 
-            if (time <= h) {
+            if (hours <= h) {
 
                 // one of the potential answers.
                 ans = mid;
