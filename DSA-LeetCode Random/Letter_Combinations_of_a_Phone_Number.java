@@ -1,4 +1,4 @@
-// https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/
+// https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,25 +19,23 @@ public class Letter_Combinations_of_a_Phone_Number {
             return ans;
         }
 
-        return helper(digits, "", arr, ans);
+        helper(digits, new StringBuilder(), arr, ans, 0);
+        return ans;
     }
 
-    public static List<String> helper(String digits, String word, char[][] arr, ArrayList<String> ans) {
-        if (digits.length() == 0) {
-            ans.add(word);
-            return ans;
+    public static void helper(String digits, StringBuilder word, char[][] arr, ArrayList<String> ans, int index) {
+        if (index >= digits.length()) {
+            ans.add(word.toString());
+            return;
         }
 
-        int digit = digits.charAt(0) - '0';
+        int digit = digits.charAt(index) - '0';
+        char[] letters = arr[digit];
 
-        if (digit == 1) {
-            helper(digits.substring(1), word, arr, ans);
-        } else {
-            for (int i = 0; i < arr[digit].length; i++) {
-                helper(digits.substring(1), word + arr[digit][i], arr, ans);
-            }
+        for (int i = 0; i < letters.length; i++) {
+            word.append(letters[i]);
+            helper(digits, word, arr, ans, index + 1);
+            word.deleteCharAt(word.length() - 1);
         }
-
-        return ans;
     }
 }
