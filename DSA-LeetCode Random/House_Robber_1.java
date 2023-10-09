@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/house-robber/description/
+// https://leetcode.com/problems/house-robber/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.Arrays;
 
@@ -8,14 +8,12 @@ public class House_Robber_1 {
     }
 
     public static int rob(int[] arr) {
-        // return solve(arr, 0);
-        int[] dp = new int[arr.length];
-        Arrays.fill(dp, -1);
-        return solve_DP(arr, 0, dp);
+        int[] memo = new int[arr.length];
+        Arrays.fill(memo, -1);
+        return solve_DP(arr, 0, memo);
     }
 
     // using recursion.
-    // shows TLE.
     public static int solve(int[] arr, int index) {
         if (index >= arr.length) {
             return 0;
@@ -27,21 +25,21 @@ public class House_Robber_1 {
         return Math.max(take, notTake);
     }
 
-    // usinf DP.
-    public static int solve_DP(int[] arr, int index, int[] dp) {
+    // using DP.
+    public static int solve_DP(int[] arr, int index, int[] memo) {
         if (index >= arr.length) {
             return 0;
         }
 
-        if (dp[index] != -1) {
-            return dp[index];
+        if (memo[index] != -1) {
+            return memo[index];
         }
 
-        int take = arr[index] + solve_DP(arr, index + 2, dp);
-        int notTake = 0 + solve_DP(arr, index + 1, dp);
+        int take = arr[index] + solve_DP(arr, index + 2, memo);
+        int notTake = 0 + solve_DP(arr, index + 1, memo);
 
-        dp[index] = Math.max(take, notTake);
+        memo[index] = Math.max(take, notTake);
 
-        return dp[index];
+        return memo[index];
     }
 }
