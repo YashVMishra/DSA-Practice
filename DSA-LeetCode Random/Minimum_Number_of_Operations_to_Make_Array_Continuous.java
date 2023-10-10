@@ -51,6 +51,8 @@ public class Minimum_Number_of_Operations_to_Make_Array_Continuous {
             unique.add(num);
         }
 
+        // making new array with unique elements
+        // to avoid the duplicates.
         int[] newNums = new int[unique.size()];
         int index = 0;
 
@@ -62,6 +64,10 @@ public class Minimum_Number_of_Operations_to_Make_Array_Continuous {
 
         int j = 0;
         for (int i = 0; i < newNums.length; i++) {
+
+            // not starting j from 0 cause we know that
+            // the elements which are smaller for a given i
+            // will also be smaller for the next i.
             while (j < newNums.length && newNums[j] < newNums[i] + n) {
                 j++;
             }
