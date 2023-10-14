@@ -1,36 +1,14 @@
-// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/description/
 
 import java.util.Arrays;
 
-public class Best_Time_to_Buy_and_Sell_Stock_2 {
+public class Best_Time_to_Buy_and_Sell_Stock_with_Cooldown {
     public static void main(String[] args) {
-        int[] prices = { 7, 1, 5, 3, 6, 4 };
+        int[] prices = { 1, 2, 3, 0, 2 };
         System.out.println(maxProfit(prices));
     }
 
-    // for this approach see the video
-    // https://www.youtube.com/watch?v=XcJyzicbGn8
     public static int maxProfit(int[] prices) {
-        int prev = prices[0];
-        int profit = 0;
-
-        for (int i = 1; i < prices.length; i++) {
-            int current = prices[i];
-
-            if (prev < current) {
-                profit += current - prev;
-                prev = current;
-            } else {
-                prev = current;
-            }
-        }
-
-        return profit;
-    }
-
-    // -------------------------------------------------------------------------------------
-
-    public static int maxProfit_2(int[] prices) {
         int[][] memo = new int[prices.length][2];
         for (int[] arr : memo) {
             Arrays.fill(arr, -1);
@@ -53,7 +31,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_2 {
 
             profit = Math.max(profit, Math.max(buy, notBuy));
         } else {
-            int sell = prices[index] + solve(prices, index + 1, true);
+            int sell = prices[index] + solve(prices, index + 2, true);
             int notSell = solve(prices, index + 1, false);
 
             profit = Math.max(profit, Math.max(sell, notSell));
@@ -82,7 +60,7 @@ public class Best_Time_to_Buy_and_Sell_Stock_2 {
 
             profit = Math.max(profit, Math.max(buy, notBuy));
         } else {
-            int sell = prices[index] + solve_DP(prices, index + 1, 1, memo);
+            int sell = prices[index] + solve_DP(prices, index + 2, 1, memo);
             int notSell = solve_DP(prices, index + 1, 0, memo);
 
             profit = Math.max(profit, Math.max(sell, notSell));
@@ -91,6 +69,4 @@ public class Best_Time_to_Buy_and_Sell_Stock_2 {
         memo[index][canBuy] = profit;
         return profit;
     }
-
-    // -------------------------------------------------------------------------------------
 }
