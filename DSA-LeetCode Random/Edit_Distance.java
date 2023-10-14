@@ -1,4 +1,6 @@
-//https://leetcode.com/problems/edit-distance/description/
+// https://leetcode.com/problems/edit-distance/description/?envType=study-plan-v2&envId=leetcode-75
+
+import java.util.Arrays;
 
 public class Edit_Distance {
     public static void main(String[] args) {
@@ -9,31 +11,66 @@ public class Edit_Distance {
     }
 
     public static int minDistance(String word1, String word2) {
-        int len1 = word1.length();
-        int len2 = word2.length();
+        // return solve(word1, word2, 0, 0);
 
-        int[][] dp = new int[len1 + 1][len2 + 1];
-
-        for (int i = 0; i <= len1; i++) {
-            dp[i][0] = i;
+        int[][] memo = new int[word1.length()][word2.length()];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
         }
 
-        for (int i = 0; i <= len2; i++) {
-            dp[0][i] = i;
+        return solve_DP(word1, word2, 0, 0, memo);
+    }
+
+    // using recursion.
+    private static int solve(String word1, String word2, int i, int j) {
+        if (i == word1.length()) {
+            return word2.length() - j;
         }
 
-        for (int i = 1; i <= len1; i++) {
-            for (int j = 1; j <= len2; j++) {
-                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1];
-                }
-
-                else {
-                    dp[i][j] = 1 + Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]);
-                }
-            }
+        if (j == word2.length()) {
+            return word1.length() - i;
         }
 
-        return dp[len1][len2];
+        int ans = 0;
+        if (word1.charAt(i) == word2.charAt(j)) {
+            ans = solve(word1, word2, i + 1, j + 1);
+        } else {
+            int insert = 1 + solve(word1, word2, i, j + 1);
+            int delete = 1 + solve(word1, word2, i + 1, j);
+            int replace = 1 + solve(word1, word2, i + 1, j + 1);
+
+            ans = Math.min(insert, Math.min(delete, replace));
+        }
+
+        return ans;
+    }
+
+    // using DP
+    private static int solve_DP(String word1, String word2, int i, int j, int[][] memo) {
+        if (i == word1.length()) {
+            return word2.length() - j;
+        }
+
+        if (j == word2.length()) {
+            return word1.length() - i;
+        }
+
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+
+        int ans = 0;
+        if (word1.charAt(i) == word2.charAt(j)) {
+            ans = solve_DP(word1, word2, i + 1, j + 1, memo);
+        } else {
+            int insert = 1 + solve_DP(word1, word2, i, j + 1, memo);
+            int delete = 1 + solve_DP(word1, word2, i + 1, j, memo);
+            int replace = 1 + solve_DP(word1, word2, i + 1, j + 1, memo);
+
+            ans = Math.min(insert, Math.min(delete, replace));
+        }
+
+        memo[i][j] = ans;
+        return ans;
     }
 }
