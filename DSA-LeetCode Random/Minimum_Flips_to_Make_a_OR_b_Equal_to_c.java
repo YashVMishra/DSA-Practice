@@ -11,7 +11,9 @@ public class Minimum_Flips_to_Make_a_OR_b_Equal_to_c {
     public static int minFlips(int a, int b, int c) {
         int flips = 0;
 
-        while (a > 0 && b > 0 && c > 0) {
+        // you can also write this
+        // while( a != 0 || b != 0 || c != 0)
+        while (a > 0 || b > 0 || c > 0) {
             int bitA = a & 1;
             int bitB = b & 1;
             int bitC = c & 1;
