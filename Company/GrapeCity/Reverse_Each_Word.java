@@ -1,3 +1,5 @@
+// https://www.hackerrank.com/contests/grapecity-coding-questions/challenges/reverse-each-word-2
+
 import java.util.Scanner;
 
 public class Reverse_Each_Word {
