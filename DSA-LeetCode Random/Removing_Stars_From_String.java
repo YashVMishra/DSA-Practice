@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/removing-stars-from-a-string/description/
+// https://leetcode.com/problems/removing-stars-from-a-string/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.Stack;
 
