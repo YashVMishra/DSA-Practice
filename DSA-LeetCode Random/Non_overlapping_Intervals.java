@@ -1,4 +1,4 @@
-// https://leetcode.com/problems/non-overlapping-intervals/description/
+// https://leetcode.com/problems/non-overlapping-intervals/description/?envType=study-plan-v2&envId=leetcode-75
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,7 +12,7 @@ public class Non_overlapping_Intervals {
     public static int eraseOverlapIntervals(int[][] intervals) {
 
         // we have taken ans as -1 as at first we have taken previous as intervals[0].
-        // if ypu take ans as 0 then start from second row of the interval array.
+        // if you take ans as 0 then start from second row of the interval array.
         int ans = -1;
 
         // sorting acc to end time.
@@ -25,10 +25,11 @@ public class Non_overlapping_Intervals {
 
         int[] prev = intervals[0];
         for (int[] interval : intervals) {
-            if (interval[0] < prev[1])
-                ans++;
-            else
+            if (interval[0] >= prev[1]) {
                 prev = interval;
+            } else {
+                ans++;
+            }
         }
 
         return ans;
