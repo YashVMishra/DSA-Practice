@@ -59,5 +59,31 @@ public class Power_of_Four {
     }
 
     // using bit manipulation.
+    public static boolean isPowerOfFour_3(int n) {
+        if (n == 1) {
+            return true;
+        }
 
+        if (n < 4) {
+            return false;
+        }
+
+        return (n & (n - 1)) == 0 && (n - 1 % 3 == 0);
+    }
+
+    // using pow function.
+    public static boolean isPowerOfFour_4(int n) {
+        if (n <= 0) {
+            return false;
+        }
+
+        int a = (int) (Math.log(n) / Math.log(4));
+        /*
+         * 4^a = n
+         * a = log(n) to base 4
+         * a = log(n) to base e / log(4) to base e
+         */
+
+        return n == Math.pow(4, a);
+    }
 }
