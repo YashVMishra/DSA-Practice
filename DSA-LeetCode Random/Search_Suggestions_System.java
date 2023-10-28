@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/search-suggestions-system/description/
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +20,14 @@ public class Search_Suggestions_System {
         for (String prod : products) {
             insertWord(trie, prod);
         }
+
         List<List<String>> result = new ArrayList<>();
         String prefix = "";
         for (char c : search.toCharArray()) {
             prefix += c;
             result.add(searchWord(trie, prefix));
         }
+
         return result;
     }
 
@@ -33,8 +37,10 @@ public class Search_Suggestions_System {
             if (trie.children[index] == null) {
                 trie.children[index] = new TrieNode();
             }
+
             trie = trie.children[index];
         }
+
         trie.endOfWord = true;
     }
 
@@ -45,8 +51,10 @@ public class Search_Suggestions_System {
             if (trie.children[index] == null) {
                 return result;
             }
+
             trie = trie.children[index];
         }
+
         dfs(trie, prefix, result);
         return result;
     }
@@ -55,6 +63,7 @@ public class Search_Suggestions_System {
         if (result.size() == 3) {
             return;
         }
+
         if (trie.endOfWord) {
             result.add(pre);
         }
