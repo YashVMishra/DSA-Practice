@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class Reduction_Operations_to_Make_the_Array_Elements_Equal {
     public static void main(String[] args) {
-
+        reductionOperations(new int[] { 5, 1, 3 });
     }
 
     public static int reductionOperations(int[] nums) {
