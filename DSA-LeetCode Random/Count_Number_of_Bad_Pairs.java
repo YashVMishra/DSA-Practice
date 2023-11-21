@@ -17,9 +17,9 @@ public class Count_Number_of_Bad_Pairs {
             // we have done i - map.getOrDefault(key, 0) as
             // we want the pairs which are not equal and if the
             // key is not present then it can make pair with every element
-            // to its left and we have subtracted the count of that key
-            // cause that many times the same value is present
-            // to its left and it cannot make pair with that many.
+            // to its left and that value is given by i and we have subtracted
+            // the count of that key cause that many times the same value is
+            // present to its left and it cannot make pair with that many.
             count += i - map.getOrDefault(key, 0);
             map.put(key, map.getOrDefault(key, 0) + 1);
         }
