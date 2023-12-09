@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/binary-tree-inorder-traversal/description/
+// https://leetcode.com/problems/binary-tree-inorder-traversal/description/?envType=daily-question&envId=2023-12-09
 
 import java.util.List;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class BT_Inorder_Traversal {
         return list;
     }
 
+    // using recursion
     public static void helper(TreeNode root, List<Integer> list) {
         if (root == null) {
             return;
@@ -48,5 +49,33 @@ public class BT_Inorder_Traversal {
         helper(root.left, list);
         list.add(root.val);
         helper(root.right, list);
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    public static List<Integer> inorderTraversal_2(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        TreeNode curr = root;
+        TreeNode pre;
+
+        while (curr != null) {
+            if (curr.left == null) {
+                result.add(curr.val);
+                curr = curr.right;
+            } else {
+                pre = curr.left;
+
+                while (pre.right != null) {
+                    pre = pre.right;
+                }
+
+                pre.right = curr;
+                TreeNode temp = curr;
+                curr = curr.left;
+                temp.left = null;
+            }
+        }
+
+        return result;
     }
 }
