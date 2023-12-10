@@ -53,6 +53,7 @@ public class BT_Inorder_Traversal {
 
     // -----------------------------------------------------------------------------------
 
+    // Morris Traversal
     public static List<Integer> inorderTraversal_2(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         TreeNode curr = root;
