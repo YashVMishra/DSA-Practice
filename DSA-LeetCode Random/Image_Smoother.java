@@ -1,4 +1,14 @@
+// https://leetcode.com/problems/image-smoother/description/?envType=daily-question&envId=2023-12-19
+
+import java.util.Arrays;
+
 public class Image_Smoother {
+    private static final int[][] directions = {
+            { -1, -1 }, { -1, 0 }, { -1, 1 },
+            { 0, -1 }, { 0, 0 }, { 0, 1 },
+            { 1, -1 }, { 1, 0 }, { 1, 1 }
+    };
+
     public static void main(String[] args) {
         int[][] M = { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } };
         int[][] result = imageSmoother(M);
@@ -7,24 +17,27 @@ public class Image_Smoother {
         }
     }
 
-    public static int[][] imageSmoother(int[][] M) {
-        int[][] result = new int[M.length][M[0].length];
-        int[][] directions = { { 0, 0 }, { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, -1 },
-                { 1, 1 } };
+    public static int[][] imageSmoother(int[][] img) {
+        int m = img.length;
+        int n = img[0].length;
 
-        for (int i = 0; i < M.length; ++i) {
-            for (int j = 0; j < M[0].length; ++j) {
+        int[][] result = new int[m][n];
 
-                int sum = M[i][j];
-                int count = 1;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int sum = 0;
+                int count = 0;
 
+                // Iterate over all plausible nine indices.
                 for (int[] direction : directions) {
-                    int x = i + direction[0];
-                    int y = j + direction[1];
 
-                    if (x >= 0 && x < M.length && y >= 0 && y < M[0].length) {
-                        sum += M[x][y];
-                        ++count;
+                    // If the indices form a valid neighbor
+                    int i_ = i + direction[0];
+                    int j_ = j + direction[1];
+
+                    if (0 <= i_ && i_ < m && 0 <= j_ && j_ < n) {
+                        sum += img[i_][j_];
+                        count += 1;
                     }
                 }
 
