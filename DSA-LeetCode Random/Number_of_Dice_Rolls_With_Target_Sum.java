@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/?envType=daily-question&envId=2023-12-26
+
 import java.util.Arrays;
 
 public class Number_of_Dice_Rolls_With_Target_Sum {
