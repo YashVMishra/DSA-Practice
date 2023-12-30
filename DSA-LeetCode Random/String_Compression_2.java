@@ -16,6 +16,7 @@ public class String_Compression_2 {
         for (int[] row : t) {
             Arrays.fill(row, -1);
         }
+
         return solve(0, k, s);
     }
 
