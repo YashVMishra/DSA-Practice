@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/minimum-window-substring/description/?envType=daily-question&envId=2024-02-04
+
 import java.util.HashMap;
 
 public class Minimum_Window_Substring {
@@ -16,64 +18,45 @@ public class Minimum_Window_Substring {
             return "";
         }
 
-        HashMap<Character, Integer> t_map = new HashMap<>();
-        HashMap<Character, Integer> s_map = new HashMap<>();
-
-        for (int i = 0; i < t.length(); i++) {
-            t_map.put(t.charAt(i), t_map.getOrDefault(t.charAt(i), 0) + 1);
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
 
-        int match_count = 0;
-        int desired_count = t.length();
-        int i = -1;
-        int j = -1;
-        String ans = "";
+        int left = 0;
+        int right = 0;
+        int minLeft = 0;
+        int countRequired = t.length();
+        int minWindow = Integer.MAX_VALUE;
 
-        while (true) {
-            boolean f1 = false;
-            boolean f2 = false;
+        while (right < s.length()) {
+            char ch = s.charAt(right);
 
-            // acquire
-            while (i < s.length() - 1 && match_count < desired_count) {
-                i++;
-                char ch = s.charAt(i);
-                s_map.put(ch, s_map.getOrDefault(ch, 0) + 1);
-
-                if (t_map.getOrDefault(ch, 0) <= s_map.getOrDefault(ch, 0)) {
-                    match_count++;
-                }
-
-                f1 = true;
+            if (map.getOrDefault(ch, 0) > 0) {
+                countRequired--;
             }
 
-            // collect and release
-            while (j < i && match_count == desired_count) {
-                String subString = s.substring(j + 1, i + 1);
-                if (ans.length() == 0 || ans.length() > subString.length()) {
-                    ans = subString;
+            map.put(ch, map.getOrDefault(ch, 0) - 1);
+
+            while (countRequired == 0) {
+                if (minWindow > right - left + 1) {
+                    minWindow = right - left + 1;
+                    minLeft = left;
                 }
 
-                j++;
-                char ch = s.charAt(j);
+                char leftChar = s.charAt(left);
+                map.put(leftChar, map.get(leftChar) + 1);
 
-                if (s_map.get(ch) == 1) {
-                    s_map.remove(ch);
-                } else {
-                    s_map.put(ch, s_map.get(ch) - 1);
+                if (map.get(leftChar) > 0) {
+                    countRequired++;
                 }
 
-                if (s_map.getOrDefault(ch, 0) < t_map.getOrDefault(ch, 0)) {
-                    match_count--;
-                }
-
-                f2 = true;
+                left++;
             }
 
-            if (f1 == false && f2 == false) {
-                break;
-            }
+            right++;
         }
 
-        return ans;
+        return minWindow == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minWindow);
     }
 }
