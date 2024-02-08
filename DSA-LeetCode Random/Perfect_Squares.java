@@ -1,10 +1,10 @@
-//https://leetcode.com/problems/perfect-squares/description/
+// https://leetcode.com/problems/perfect-squares/description/?envType=daily-question&envId=2024-02-08
 
 import java.util.Arrays;
 
 public class Perfect_Squares {
     public static void main(String[] args) {
-        System.out.println(numSquares(5));
+        System.out.println(numSquares(12));
     }
 
     public static int numSquares(int n) {
@@ -17,26 +17,27 @@ public class Perfect_Squares {
 
         // if you want to run the method solve_3 then run the below code.
         int[] dp = new int[n + 1];
-        Arrays.fill(dp, -1);
-        return solve_3(n, dp);
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        return solve_DP(n, dp);
     }
 
     // using recursion.
-    public static int solve_1(int n) {
+    public static int solve(int n) {
         if (n == 0) {
             return 0;
         }
 
-        int ans = n;
+        int minCount = Integer.MAX_VALUE;
         for (int i = 1; i * i <= n; i++) {
-            ans = Math.min(ans, 1 + solve_1(n - i * i));
+            int result = 1 + solve(n - i * i);
+            minCount = Math.min(minCount, result);
         }
 
-        return ans;
+        return minCount;
     }
 
     // using dp
-    public static int solve_2(int n, int[] dp) {
+    public static int solve_DP(int n, int[] dp) {
         if (n == 0) {
             return 0;
         }
@@ -45,29 +46,12 @@ public class Perfect_Squares {
             return dp[n];
         }
 
+        int minCount = Integer.MAX_VALUE;
         for (int i = 1; i * i <= n; i++) {
-            dp[n] = Math.min(dp[n], 1 + solve_2(n - i * i, dp));
+            int result = 1 + solve_DP(n - i * i, dp);
+            minCount = Math.min(minCount, result);
         }
 
-        return dp[n];
-    }
-
-    // using dp ... just a little bit of change.
-    public static int solve_3(int n, int[] dp) {
-        if (n == 0) {
-            return 0;
-        }
-
-        if (dp[n] != -1) {
-            return dp[n];
-        }
-
-        int ans = n;
-        for (int i = 1; i * i <= n; i++) {
-            ans = Math.min(ans, 1 + solve_3(n - i * i, dp));
-        }
-
-        dp[n] = ans;
-        return dp[n];
+        return dp[n] = minCount;
     }
 }
