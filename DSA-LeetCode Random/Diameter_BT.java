@@ -20,6 +20,8 @@ class TreeNode {
 }
 
 public class Diameter_BT {
+    static int result = Integer.MIN_VALUE;
+
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
@@ -57,6 +59,8 @@ public class Diameter_BT {
         return (Math.max(leftHeight, righHeight) + 1);
     }
 
+    // -------------------Another approach-------------------
+
     static class TreeInfo {
         int ht;
         int dia;
@@ -86,5 +90,29 @@ public class Diameter_BT {
 
         TreeInfo ans = new TreeInfo(myHeight, myDia);
         return ans;
+    }
+
+    // -------------------Another approach-------------------
+
+    public static int diameterOfBinaryTree(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        int[] result = { Integer.MIN_VALUE };
+        diameter(root, result);
+
+        return result[0];
+    }
+
+    private static int diameter(TreeNode root, int[] result) {
+        if (root == null)
+            return 0;
+
+        int left = diameter(root.left, result);
+        int right = diameter(root.right, result);
+
+        result[0] = Math.max(result[0], left + right);
+
+        return Math.max(left, right) + 1;
     }
 }
