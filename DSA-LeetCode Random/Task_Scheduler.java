@@ -1,6 +1,11 @@
-//https://leetcode.com/problems/task-scheduler/description/?envType=study-plan&id=level-2
+// https://leetcode.com/problems/task-scheduler/description/?envType=daily-question&envId=2024-03-19
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Task_Scheduler {
     public static void main(String[] args) {
@@ -9,21 +14,44 @@ public class Task_Scheduler {
         System.out.println(leastInterval(tasks, n));
     }
 
-    public static int leastInterval(char[] tasks, int n) {
-        int[] char_counts = new int[26];
+    public static int leastInterval(char[] tasks, int p) {
+        HashMap<Character, Integer> map = new HashMap<>();
 
         for (char ch : tasks) {
-            char_counts[ch - 'A']++;
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
 
-        Arrays.sort(char_counts);
-        int max_value = char_counts[25] - 1;
-        int idle_slots = max_value * n;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder()); // max heap
+        // we want to finish the process which is most occurring (having highest
+        // frequency)
+        // so that we don't have to finish in the last with p gaps.
+        int time = 0;
 
-        for (int i = 24; i >= 0; i--) {
-            idle_slots -= Math.min(char_counts[i], max_value);
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            pq.add(entry.getValue());
         }
 
-        return idle_slots > 0 ? idle_slots + tasks.length : tasks.length;
+        while (!pq.isEmpty()) {
+            List<Integer> temp = new ArrayList<>();
+            for (int i = 1; i <= p + 1; i++) {
+                // filling first p+1 characters
+                if (!pq.isEmpty()) {
+                    temp.add(pq.poll() - 1); // finishing one instance of each process
+                }
+            }
+
+            for (int freq : temp) {
+                if (freq > 0)
+                    pq.add(freq);
+            }
+
+            if (pq.isEmpty()) // all processes finished
+                time += temp.size();
+            else
+                time += (p + 1); // we finished p+1 tasks above in the loop
+
+        }
+
+        return time;
     }
 }
