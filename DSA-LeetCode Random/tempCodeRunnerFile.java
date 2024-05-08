@@ -1,5 +1,9 @@
-public class H_Index {
-    public static void main(String[] args) {
-        int[] citations = { 3, 0, 6, 1, 5 };
+class Pair {
+    int index;
+    int value;
 
-        System.out.println(hIndex(citations));
+    Pair(int index, int value) {
+        this.index = index;
+        this.value = value;
+    }
+}
