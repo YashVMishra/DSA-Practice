@@ -40,5 +40,4 @@ public class Palindrome_Partitioning {
 
         return true;
     }
-
 }
