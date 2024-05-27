@@ -32,4 +32,27 @@ public class Special_Array_With_X_Elements_Greater_Than_or_Equal_X {
 
         return -1;
     }
+
+    // --------------------------------------------------------------------------------
+
+    // brute force
+    public static int specialArray_2(int[] nums) {
+        int n = nums.length;
+
+        for (int i = n; i >= 0; i--) {
+            int count = 0;
+
+            for (int num : nums) {
+                if (num >= i) {
+                    count++;
+                }
+            }
+
+            if (count == i) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }
